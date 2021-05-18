@@ -1,7 +1,4 @@
-import java.io.Closeable;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +21,22 @@ public class ClientHandler implements Runnable, Closeable {
                 .collect(Collectors.joining(","));
     }
 
+    private void sendFile(DataInputStream in, DataOutputStream out) throws Exception {
+        File f = new File("CloudFS-Server/server-files/" + in.readUTF());
+        if (!f.exists()){
+            throw new Exception("File not exists.");
+        }
+        FileInputStream fs = new FileInputStream(f.getPath());
+        long sz = f.length();
+        out.writeUTF("/sendFile");
+        out.writeUTF(f.getName());
+        out.writeUTF(String.valueOf(sz));
+        byte[] buf = new byte[1024];
+        while (fs.read(buf) > -1){
+            out.write(buf);
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("Start listening...");
@@ -32,10 +45,12 @@ public class ClientHandler implements Runnable, Closeable {
             while (true){
                 String msg = in.readUTF();
                 System.out.println("Received: " + msg);
-                if (msg.equals("/getListFiles")){
+                if (msg.equals("/getListFiles")) {
                     out.writeUTF("/takeFiles");
                     out.writeUTF(getFiles());
                     out.flush();
+                } else if (msg.equals("/getFile")){
+                    sendFile(in, out);
                 } else {
                     out.writeUTF(msg);
                     out.flush();

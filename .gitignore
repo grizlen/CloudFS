@@ -1,0 +1,3 @@
+# Project exclude paths
+/CloudFS-Server/target/
+/ClousFS-Client/target/

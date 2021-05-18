@@ -4,6 +4,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,6 +34,8 @@ public class ClientController implements Initializable {
                                 listOutput.getItems().clear();
                                 listOutput.getItems().addAll(names);
                             });
+                        } else if (msg.equals("/sendFile")){
+                            saveFile();
                         } else {
                             Platform.runLater(() -> listOutput.getItems().add(msg));
                         }
@@ -46,5 +49,11 @@ public class ClientController implements Initializable {
         } catch (IOException e) {
             System.err.println("Connection was broken.");
         }
+    }
+
+    private void saveFile() throws IOException {
+        File f = new File("CloudFS-Client/client-files/" + net.getMessage());
+        long sz = Long.parseLong(net.getMessage());
+
     }
 }

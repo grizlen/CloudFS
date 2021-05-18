@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.geekbrains</groupId>
-    <artifactId>CloudFS-2</artifactId>
+    <artifactId>CloudFS</artifactId>
     <packaging>pom</packaging>
     <version>1</version>
     <modules>
         <module>CloudFS-Server</module>
-        <module>ClousFS-Client</module>
+        <module>CloudFS-Client</module>
     </modules>
 
     <properties>

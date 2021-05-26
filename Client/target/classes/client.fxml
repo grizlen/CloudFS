@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane minHeight="500.0" minWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.ClientController">
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+         <content>
+             <ListView fx:id="lvFiles" />
+         </content>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </ScrollPane>
+   </center>
+   <top>
+      <ToolBar BorderPane.alignment="CENTER">
+        <items>
+          <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Загрузить" />
+            <Button mnemonicParsing="false" text="Скачать" />
+            <Button mnemonicParsing="false" text="Удалть" />
+            <Button mnemonicParsing="false" text="Настройки" />
+            <Button mnemonicParsing="false" text="Авторизация" />
+        </items>
+      </ToolBar>
+   </top>
+   <bottom>
+      <TextField fx:id="tfInput" onAction="#sendCommand" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </BorderPane.margin>
+      </TextField>
+   </bottom>
+</BorderPane>

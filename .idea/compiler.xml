@@ -6,12 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="CloudFS-Server" />
-        <module name="CloudFS-Client" />
+        <module name="Client" />
+        <module name="Server" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ClousFS-Client" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

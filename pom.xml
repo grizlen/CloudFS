@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
     <version>1</version>
     <modules>
-        <module>CloudFS-Server</module>
-        <module>CloudFS-Client</module>
+        <module>Client</module>
+        <module>Server</module>
     </modules>
 
     <properties>

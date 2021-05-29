@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="4.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.ClientMainController">
+   <HBox spacing="4">
+      <Button text="Button" />
+      <Button text="Button" />
+      <Button text="Button" />
+      <Button text="Button" />
+   </HBox>
+   <TextField>
+   </TextField>
+   <ListView VBox.vgrow="ALWAYS">
+   </ListView>
+   <padding>
+      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+   </padding>
+</VBox>

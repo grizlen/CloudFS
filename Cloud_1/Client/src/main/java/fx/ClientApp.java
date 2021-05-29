@@ -1,6 +1,7 @@
 package fx;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,7 +17,11 @@ public class ClientApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("/client.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/clientmain.fxml"));
+        Parent parent = loader.load();
+        ClientMainController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
+        primaryStage.setOnCloseRequest(event -> controller.exitAction());
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
     }

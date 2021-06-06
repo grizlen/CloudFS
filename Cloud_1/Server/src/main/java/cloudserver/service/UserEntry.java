@@ -32,6 +32,15 @@ public class UserEntry {
         this.id = id;
         this.name = name;
         userRootPath = FilesService.getServerRootPath().resolve("user_" + id);
+        if (!Files.exists(userRootPath)) {
+            log.debug("md {}.", userRootPath.toString());
+            try {
+                Files.createDirectory(userRootPath);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+        }
+        log.debug("UserEntry: id = {}; name = {}; path = {}.", id, name, userRootPath.toString());
     }
 
     public ListRequestMessage listFiles(String pathName) {

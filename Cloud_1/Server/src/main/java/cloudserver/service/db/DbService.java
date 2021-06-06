@@ -32,7 +32,7 @@ public class DbService {
                         "storage_path TEXT NOT NULL, " +
                         "client_path TEXT NOT NULL);"
         );
-        log.debug("Table: files(id, user-id, file_name, storage_path, client_path)");
+        log.debug("Table: files(id, user_id, file_name, storage_path, client_path)");
     }
 
     public void close() throws Exception {

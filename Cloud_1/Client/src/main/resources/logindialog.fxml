@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox spacing="16.0" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cloudclient.fx.LoginDialogController">
-   <HBox spacing="8.0">
+   <HBox spacing="8.0" >
       <Label text="Name" />
       <TextField fx:id="tfUserName" HBox.hgrow="ALWAYS" />
    </HBox>
@@ -15,8 +15,8 @@
    </HBox>
    <CheckBox fx:id="cbNewUser" text="new user" />
    <HBox spacing="8.0">
-      <Button onAction="#btnOkAction" text="OK" />
-      <Button onAction="#btnCancelAction" text="Cancel" />
+      <Button onAction="#btnOkAction" text="OK" defaultButton="true"/>
+      <Button onAction="#btnCancelAction" text="Cancel" cancelButton="true"/>
    </HBox>
    <padding>
       <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />

@@ -1,7 +1,6 @@
 package cloudserver.service.db;
 
 import lombok.extern.slf4j.Slf4j;
-import cloudserver.service.UserEntry;
 
 import java.sql.ResultSet;
 
@@ -75,4 +74,5 @@ public class DbService {
                 "INSERT INTO 'users' (login, password) VALUES('%s', '%s');", login, password);
         return connection.updateQuery(query) == 1;
     }
+
 }

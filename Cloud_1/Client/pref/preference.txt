@@ -1,0 +1,5 @@
+userPassword=password
+localPathName=Client/client-files
+userName=user
+serverPort=8189
+serverHost=localhost

@@ -45,6 +45,10 @@ public class AuthService {
         return null;
     }
 
+    public void unSubscribe(ChannelHandlerContext channelHandlerContext) {
+        users.remove(channelHandlerContext);
+    }
+
     private boolean isLoggedIn(String userName){
         for(UserEntry entry: users.values()) {
             if (entry.getName().equalsIgnoreCase(userName)){

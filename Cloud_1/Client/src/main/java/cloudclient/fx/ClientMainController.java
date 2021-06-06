@@ -7,17 +7,19 @@ import javafx.fxml.Initializable;
 import cloudclient.preferences.Preferences;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import transport.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -33,6 +35,7 @@ public class ClientMainController implements Initializable {
     private Net net;
     private String currentServerPath;
     private String localPathName;
+    private boolean isLogged = false;
 
     public void setMainPrimaryStage(Stage mainPrimaryStage) {
         this.mainPrimaryStage = mainPrimaryStage;
@@ -42,6 +45,13 @@ public class ClientMainController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         log.debug("Загрузить: " + file.getName());
+        try {
+            Path path = Paths.get(currentServerPath).resolve(file.getName());
+            byte[] data = Files.readAllBytes(file.toPath());
+            net.send(new SendFileMessage(path.toString(), data));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     public void btnSaveAction(ActionEvent actionEvent) {
@@ -51,7 +61,18 @@ public class ClientMainController implements Initializable {
     }
 
     public void btnDeleteAction(ActionEvent actionEvent) {
-        log.debug("Удалить");
+        String fileName = lvFiles.getSelectionModel().getSelectedItem();
+        log.debug("Удалить: " + fileName);
+        net.send(new DeleteFileMessage(Paths.get(currentServerPath).resolve(fileName).toString()));
+    }
+
+    public void btnMdAction(ActionEvent actionEvent) {
+        TextInputDialog textInputDialog = new TextInputDialog("new");
+        textInputDialog.setTitle("Make directory");
+        textInputDialog.setHeaderText(null);
+        textInputDialog.setContentText("enter directory name:");
+        Optional<String> result = textInputDialog.showAndWait();
+        result.ifPresent(s -> log.debug(s));
     }
 
     public void btnLoginAction(ActionEvent actionEvent) {
@@ -63,7 +84,8 @@ public class ClientMainController implements Initializable {
     }
 
     public void exitAction() {
-        net.colse();
+        net.close();
+        Preferences.close();
         Platform.exit();
     }
 
@@ -74,6 +96,10 @@ public class ClientMainController implements Initializable {
             loginDialog.setUserName(userName);
             loginDialog.setUserPassword(userPassword);
             if (loginDialog.execute()) {
+                if (isLogged) {
+                    net.send(new AuthCloseMessage());
+                    isLogged = false;
+                }
                 userName = loginDialog.getUserName();
                 userPassword = loginDialog.getUserPassword();
                 Preferences.getPreferences().put("userName", userName);
@@ -95,10 +121,12 @@ public class ClientMainController implements Initializable {
         switch (message.getMsg()){
             case AUTH_OK:
                 log.debug("Login success.");
+                isLogged = true;
                 Platform.runLater(() -> net.send(new ListMessage(currentServerPath)));
                 break;
             case AUTH_FAIL:
                 log.debug("Login fail, try again.");
+                isLogged = false;
                 Platform.runLater(() -> {
                     logIn();
                 });
@@ -120,12 +148,18 @@ public class ClientMainController implements Initializable {
     }
 
     private void saveFile(String pathName, byte[] data) {
-        Path path = Paths.get(localPathName).resolve(currentServerPath).resolve(pathName);
-        File file = path.toFile();
-        try {
-            try (FileOutputStream fs = new FileOutputStream(file)) {
-                fs.write(data);
+        Path path = Paths.get(localPathName).resolve(currentServerPath);
+        if (Files.notExists(path)) {
+            try {
+                Files.createDirectory(path);
+            } catch (IOException e) {
+                log.error(e.getMessage());
             }
+        }
+        path = path.resolve(pathName);
+        try {
+            Files.createFile(path);
+            Files.write(path, data);
         } catch (IOException e) {
             log.error(e.getMessage());
         }

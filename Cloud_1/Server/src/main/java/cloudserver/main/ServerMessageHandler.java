@@ -7,6 +7,9 @@ import cloudserver.service.AuthService;
 import cloudserver.service.UserEntry;
 import transport.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Slf4j
 public class ServerMessageHandler extends SimpleChannelInboundHandler<Message> {
 
@@ -23,6 +26,7 @@ public class ServerMessageHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        authService.unSubscribe(ctx);
         log.debug("Client disconnected: " + ctx);
     }
 
@@ -62,13 +66,17 @@ public class ServerMessageHandler extends SimpleChannelInboundHandler<Message> {
                     channelHandlerContext.writeAndFlush(new AuthFailMessage());
                 }
                 break;
+            case AUTH_CLOSE:
+                authService.unSubscribe(channelHandlerContext);
+                break;
             case LIST:
                 userEntry = authService.getEntry(channelHandlerContext);
                 if (userEntry == null) {
                     log.error("User not found.");
                     return;
                 }
-                channelHandlerContext.writeAndFlush(userEntry.listFiles(((ListMessage) message).getPath()));
+                userEntry.setUserCurrentPath(((ListMessage) message).getPath());
+                channelHandlerContext.writeAndFlush(userEntry.listFiles());
                 break;
             case GET_FILE:
                 userEntry = authService.getEntry(channelHandlerContext);
@@ -77,6 +85,24 @@ public class ServerMessageHandler extends SimpleChannelInboundHandler<Message> {
                     return;
                 }
                 channelHandlerContext.writeAndFlush(userEntry.sendFile(((GetFileMessage) message).getPath()));
+                break;
+            case SEND_FILE:
+                userEntry = authService.getEntry(channelHandlerContext);
+                if (userEntry == null) {
+                    log.error("User not found.");
+                    return;
+                }
+                userEntry.saveFile(((SendFileMessage) message).getPath(), ((SendFileMessage) message).getData());
+                channelHandlerContext.writeAndFlush(userEntry.listFiles());
+                break;
+            case DELETE_FILE:
+                userEntry = authService.getEntry(channelHandlerContext);
+                if (userEntry == null) {
+                    log.error("User not found.");
+                    return;
+                }
+                userEntry.deleteFile(((DeleteFileMessage) message).getPath());
+                channelHandlerContext.writeAndFlush(userEntry.listFiles());
                 break;
             default:
                 log.error("Incorrect message.");

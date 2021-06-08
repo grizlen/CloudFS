@@ -33,7 +33,7 @@ public class AuthService {
         }
         UserEntry userEntry = new UserEntry(userId, userName);
         users.put(channelHandlerContext, userEntry);
-        log.debug("user {} logged in Id = {}" + userName, userId);
+        log.debug("user {} logged in Id = {}", userName, userId);
         return userEntry;
     }
 
@@ -43,6 +43,10 @@ public class AuthService {
             return subscribe(channelHandlerContext, userName, userPassword);
         }
         return null;
+    }
+
+    public void unSubscribe(ChannelHandlerContext channelHandlerContext) {
+        users.remove(channelHandlerContext);
     }
 
     private boolean isLoggedIn(String userName){

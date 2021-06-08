@@ -4,19 +4,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="4.0" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cloudclient.fx.ClientMainController">
+<VBox spacing="4.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cloudclient.fx.ClientMainController">
+   <HBox alignment="CENTER_RIGHT" spacing="4">
+      <Button onAction="#btnLoginAction" text="Авторизация" />
+   </HBox>
+   <HBox spacing="4">
+      <TextField fx:id="tfPath" editable="false" HBox.hgrow="ALWAYS" />
+      <Button onAction="#btnUpAction" text="..." />
+   </HBox>
+   <ListView fx:id="lvFiles" onDragOver="#lvFilesDragOverAction" onDragDropped="#lvFilesDragDoneAction" VBox.vgrow="ALWAYS">
+   </ListView>
    <HBox spacing="4">
       <Button onAction="#btnLoadAction" text="Загрузить" />
       <Button onAction="#btnSaveAction" text="Скачать" />
       <Button onAction="#btnDeleteAction" text="Удалить" />
-      <Button onAction="#btnLoginAction" text="Авторизация" />
+      <Button onAction="#btnMdAction" text="Новая папка" />
    </HBox>
-   <HBox spacing="4">
-      <TextField fx:id="tfPath" HBox.hgrow="ALWAYS"/>
-      <Button onAction="#btnUpAction" text="..." />
-   </HBox>
-   <ListView fx:id="lvFiles" VBox.vgrow="ALWAYS">
-   </ListView>
    <padding>
       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
    </padding>

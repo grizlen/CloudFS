@@ -1,7 +1,6 @@
 package cloudserver.service.db;
 
 import lombok.extern.slf4j.Slf4j;
-import cloudserver.service.UserEntry;
 
 import java.sql.ResultSet;
 
@@ -32,7 +31,7 @@ public class DbService {
                         "storage_path TEXT NOT NULL, " +
                         "client_path TEXT NOT NULL);"
         );
-        log.debug("Table: files(id, user-id, file_name, storage_path, client_path)");
+        log.debug("Table: files(id, user_id, file_name, storage_path, client_path)");
     }
 
     public void close() throws Exception {
@@ -75,4 +74,5 @@ public class DbService {
                 "INSERT INTO 'users' (login, password) VALUES('%s', '%s');", login, password);
         return connection.updateQuery(query) == 1;
     }
+
 }

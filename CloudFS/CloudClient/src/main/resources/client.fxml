@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="4"
+      fx:controller="client.controllers.ClientController">
+    <HBox alignment="CENTER_RIGHT" spacing="4">
+        <Button onAction="#onbtnLoginAction" text="Login" />
+        <Button text="Button" />
+    </HBox>
+    <ListView VBox.vgrow="ALWAYS" />
+    <HBox spacing="4">
+        <Button text="Button" />
+        <Button text="Button" />
+    </HBox>
+   <padding>
+      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+   </padding>
+</VBox>

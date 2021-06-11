@@ -4,18 +4,19 @@ import client.network.Network;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
-import transport.AuthMessage;
-import transport.AuthNewMessage;
-import transport.Message;
+import transport.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ClientController implements Initializable {
+    public ListView lvFiles;
     private Network net;
 
     private String serverHost;
@@ -57,12 +58,17 @@ public class ClientController implements Initializable {
             loginDialog.setUserName(userName);
             loginDialog.setUserPassword(userPassword);
             if (loginDialog.execute()) {
+                if (isLogged) {
+                    net.send(new AuthCloseMessage());
+                    isLogged = false;
+                }
                 userName = loginDialog.getUserName();
                 userPassword = loginDialog.getUserPassword();
                 if (loginDialog.isNewUser()) {
                     net.send(new AuthNewMessage(userName, userPassword));
+                } else {
+                    net.send(new AuthMessage(userName, userPassword));
                 }
-                net.send(new AuthMessage(userName, userPassword));
             }
         } catch (Exception e) {
             log.error("Login exception: ", e);
@@ -75,11 +81,21 @@ public class ClientController implements Initializable {
             case AUTH_OK:
                 log.debug("Login success.");
                 isLogged = true;
+                Platform.runLater(() -> net.send(new ListMessage("")));
                 break;
             case AUTH_FAIL:
                 log.debug("Login fail, try again.");
                 isLogged = false;
                 Platform.runLater(this::login);
+                break;
+            case LIST_REQUEST:
+                lvFiles.getItems().clear();
+                lvFiles.getItems().addAll(
+                        ((ListRequestMessage) message).getFiles()
+                        .stream()
+                        .map(f -> f.toString())
+                        .collect(Collectors.toList())
+                );
                 break;
         }
     }

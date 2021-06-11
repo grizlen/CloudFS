@@ -11,7 +11,7 @@
         <Button onAction="#onbtnLoginAction" text="Login" />
         <Button text="Button" />
     </HBox>
-    <ListView VBox.vgrow="ALWAYS" />
+    <ListView fx:id="lvFiles" VBox.vgrow="ALWAYS" />
     <HBox spacing="4">
         <Button text="Button" />
         <Button text="Button" />

@@ -30,10 +30,15 @@ public class AuthService {
             log.error("User {} not found.", userName);
             return null;
         }
-        UserHandler userHandler = new UserHandler(userId, userName);
-        users.put(channelHandlerContext, userHandler);
-        log.debug("user {} logged in Id = {}", userName, userId);
-        return userHandler;
+        try {
+            UserHandler userHandler = new UserHandler(userId, userName);
+            users.put(channelHandlerContext, userHandler);
+            log.debug("user {} logged in Id = {}", userName, userId);
+            return userHandler;
+        } catch (Exception e) {
+            log.error("Auth service exception: ", e);
+            return null;
+        }
     }
 
     private boolean isLoggedIn(String userName) {
@@ -51,5 +56,17 @@ public class AuthService {
         } else {
             return null;
         }
+    }
+
+    public void unSubscribe(ChannelHandlerContext channelHandlerContext) {
+        UserHandler userHandler = getUser(channelHandlerContext);
+        if (userHandler != null) {
+            log.debug("User {} logged out.", userHandler.getName());
+        }
+        users.remove(channelHandlerContext);
+    }
+
+    public UserHandler getUser(ChannelHandlerContext channelHandlerContext) {
+        return users.get(channelHandlerContext);
     }
 }

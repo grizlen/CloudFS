@@ -43,8 +43,16 @@ public class SeverMessageHandler extends SimpleChannelInboundHandler<Message> {
                     channelHandlerContext.writeAndFlush(new AuthFailMessage());
                 }
                 break;
+            case AUTH_CLOSE:
+                authService.unSubscribe(channelHandlerContext);
+                break;
             default:
-                log.warn("Unsupported message: " + message.toString());
+                userHandler = authService.getUser(channelHandlerContext);
+                if (userHandler != null) {
+                    userHandler.processMessage(channelHandlerContext, message);
+                } else {
+                    log.error("Unsubscribed client: ", channelHandlerContext);
+                }
         }
     }
 

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import transport.ListMessage;
 import transport.ListRequestMessage;
 import transport.Message;
+import transport.SendMessage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,8 +49,23 @@ public class UserHandler {
                 setUserCurrentPath(((ListMessage) message).getPathName());
                 channelHandlerContext.writeAndFlush(listFiles());
                 break;
+            case SEND:
+                saveFile(((SendMessage) message).getPathName(), ((SendMessage) message).getData());
+                channelHandlerContext.writeAndFlush(listFiles());
+                break;
             default:
                 log.warn("Unsupported message: " + message.toString());
+        }
+    }
+
+    private void saveFile(String pathName, byte[] data) {
+        Path path = userRootPath.resolve(Paths.get(pathName));
+        log.debug("Save file: " + path.toString());
+        try {
+            Files.createFile(path);
+            Files.write(path, data);
+        } catch (Exception e) {
+            log.error("Save file exception: ", e);
         }
     }
 

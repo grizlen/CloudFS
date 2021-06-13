@@ -6,15 +6,15 @@
 
 <VBox spacing="4.0" xmlns="http://javafx.com/javafx/8.0.291" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LoginDialogController">
     <HBox spacing="4">
-        <Label text="login" />
+        <Label text="Имя" />
         <TextField fx:id="tfUserName" HBox.hgrow="ALWAYS" />
     </HBox>
     <HBox spacing="4">
-        <Label text="password" />
+        <Label text="Пароль" />
         <TextField fx:id="tfUserPassword" HBox.hgrow="ALWAYS" />
     </HBox>
     <HBox>
-        <CheckBox fx:id="cbNewUser" text="new user" />
+        <CheckBox fx:id="cbNewUser" text="Новый пользователь" />
     </HBox>
     <HBox alignment="CENTER_RIGHT" spacing="4">
         <Button onAction="#btnOkAction" defaultButton="true" text="OK" />

@@ -63,6 +63,7 @@ public class SeverMessageHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        authService.unSubscribe(ctx);
         log.debug("Client disconnected [{}]", ctx);
     }
 

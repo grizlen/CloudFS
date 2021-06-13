@@ -7,7 +7,9 @@ public enum MessageId {
     AUTH_FAIL("auth_fail"),
     AUTH_CLOSE("auth_close"),
     LIST("list"),
-    LIST_REQUEST("list_request");
+    LIST_REQUEST("list_request"),
+    SEND("send"),
+    GET("get");
 
     private final String name;
 

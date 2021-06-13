@@ -8,13 +8,17 @@
       spacing="4"
       fx:controller="client.controllers.ClientController">
     <HBox alignment="CENTER_RIGHT" spacing="4">
-        <Button onAction="#onbtnLoginAction" text="Login" />
-        <Button text="Button" />
+        <Button onAction="#onbtnLoginAction" text="Вход" />
+        <Button onAction="#onbtnPrefAction" text="Настройки" />
+    </HBox>
+    <HBox spacing="4">
+        <TextField fx:id="tfPath" HBox.hgrow="ALWAYS" editable="false" />
+        <Button text=".."/>
     </HBox>
     <ListView fx:id="lvFiles" VBox.vgrow="ALWAYS" />
     <HBox spacing="4">
-        <Button text="Button" />
-        <Button text="Button" />
+        <Button onAction="#btnLoadAction" text="Загрузить" />
+        <Button text="Скачать" />
     </HBox>
    <padding>
       <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
